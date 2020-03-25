@@ -40,5 +40,15 @@ public class Player : MonoBehaviour
             Vector3 newVelocity = maxSpeed * rb.velocity.normalized;
             rb.velocity = newVelocity;
         }
+
+        // Always face the cursor
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int layerMask = 1 << 8;
+        RaycastHit hit;
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, 100f, layerMask))
+        {
+            Vector3 difference = hit.point - transform.position;
+            rb.rotation = Quaternion.LookRotation(new Vector3(difference.x, 0f, difference.z));
+        }
     }
 }
